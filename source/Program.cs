@@ -11,6 +11,37 @@ using System.Collections.Generic;
 /// </summary>
 static class Program
 {
+
+    static void WriteResultToPipe(byte[] result, byte FX, byte FY, byte FZ, int[] colors)
+    {
+        using (var writer = Console.OpenStandardOutput())
+        {
+            using (var stream = new System.IO.BinaryWriter(writer))
+            {
+                //stream.Write((byte)'M'); // magic
+                //stream.Write((byte)'J');
+                //stream.Write((byte)'R');
+                //stream.Write((byte)'N');
+                //stream.Write(FX);
+                //stream.Write(FY);
+                //stream.Write(FZ);
+                //stream.Write(colors.Length);
+                //foreach (int color in colors) stream.Write(color);
+                //stream.Write(result.Length);
+                //foreach (byte b in result) stream.Write(b);
+
+                stream.Write(FX);
+                stream.Write(FY);
+                stream.Write(FZ);
+                stream.Write(result.Length);
+                foreach (byte b in result) stream.Write(b);
+
+            }
+
+
+        }
+    }
+
     /// <summary>
     /// <inheritdoc cref="Program" path="/summary"/>
     /// </summary>
@@ -24,6 +55,8 @@ static class Program
 
         Random meta = new();
         XDocument xdoc = XDocument.Load("models.xml", LoadOptions.SetLineInfo);
+
+
         foreach (XElement xmodel in xdoc.Root.Elements("model"))
         {
             string name = xmodel.Get<string>("name");
@@ -33,20 +66,20 @@ static class Program
             int MY = xmodel.Get("width", linearSize);
             int MZ = xmodel.Get("height", dimension == 2 ? 1 : linearSize);
 
-            Console.Write($"{name} > ");
+            //Console.Error.Write($"{name} > ");
             string filename = $"models/{name}.xml";
             XDocument modeldoc;
             try { modeldoc = XDocument.Load(filename, LoadOptions.SetLineInfo); }
             catch (Exception)
             {
-                Console.WriteLine($"ERROR: couldn't open xml file {filename}");
+                //Console.Error.WriteLine($"ERROR: couldn't open xml file {filename}");
                 continue;
             }
 
             Interpreter interpreter = Interpreter.Load(modeldoc.Root, MX, MY, MZ);
             if (interpreter == null)
             {
-                Console.WriteLine("ERROR");
+                //Console.Error.WriteLine("ERROR");
                 continue;
             }
 
@@ -70,6 +103,9 @@ static class Program
                 {
                     int[] colors = legend.Select(ch => customPalette[ch]).ToArray();
                     string outputname = gif ? $"output/{interpreter.counter}" : $"output/{name}_{seed}";
+
+                    WriteResultToPipe(result, (byte)FX, (byte)FY, (byte)FZ, colors);
+
                     if (FZ == 1 || iso)
                     {
                         var (bitmap, WIDTH, HEIGHT) = Graphics.Render(result, FX, FY, FZ, colors, pixelsize, gui);
@@ -78,9 +114,9 @@ static class Program
                     }
                     else VoxHelper.SaveVox(result, (byte)FX, (byte)FY, (byte)FZ, colors, outputname + ".vox");
                 }
-                Console.WriteLine("DONE");
+                //Console.Error.WriteLine("DONE");
             }
         }
-        Console.WriteLine($"time = {sw.ElapsedMilliseconds}");
+        //Console.Error.WriteLine($"time = {sw.ElapsedMilliseconds}");
     }
 }

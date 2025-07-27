@@ -169,7 +169,7 @@ abstract class WFCNode : Branch
             bool firstSuccess = Propagate();
             if (!firstSuccess)
             {
-                Console.WriteLine("initial conditions are contradictive");
+                //Console.Error.WriteLine("initial conditions are contradictive");
                 return false;
             }
             
@@ -231,19 +231,19 @@ abstract class WFCNode : Branch
                     bool success = Propagate();
                     if (!success)
                     {
-                        Console.WriteLine($"CONTRADICTION on try {k} with {observationsSoFar} observations");
+                        //Console.Error.WriteLine($"CONTRADICTION on try {k} with {observationsSoFar} observations");
                         break;
                     }
                 }
                 else
                 {
-                    Console.WriteLine($"wfc found a good seed {seed} on try {k} with {observationsSoFar} observations");
+                    //Console.Error.WriteLine($"wfc found a good seed {seed} on try {k} with {observationsSoFar} observations");
                     return seed;
                 }
             }
         }
 
-        Console.WriteLine($"wfc failed to find a good seed in {tries} tries");
+        //Console.Error.WriteLine($"wfc failed to find a good seed in {tries} tries");
         return null;
     }
 

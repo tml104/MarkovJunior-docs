@@ -12,27 +12,27 @@ class Interpreter
 {
     /// <summary>The root AST node of the MarkovJunior program being interpreted.</summary>
     public Branch root;
-    
+
     /// <summary>The currently active AST node of the MarkovJunior program.</summary>
     public Branch current;
-    
+
     /// <summary>
     /// The current grid, whose state is updated as the MarkovJunior program is
     /// executed. The grid may also be replaced during execution, in particular
     /// by a <see cref="MapNode">Map</see> or <see cref="WFCNode">WFC</see> node.
     /// </summary>
     public Grid grid;
-    
+
     /// <summary>The initial grid.</summary>
     Grid startgrid;
-    
+
     /// <summary>
     /// If true, the grid will initially have a single non-empty cell in the
     /// center. The center cell will have the second color from the grid's
     /// alphabet; the reset of the grid will have the first color.
     /// </summary>
     bool origin;
-    
+
     /// <summary>The PRNG instance.</summary>
     public Random random;
 
@@ -43,17 +43,17 @@ class Interpreter
     /// list holds indices into this list.
     /// </summary>
     public List<(int, int, int)> changes;
-    
+
     /// <summary>
     /// A list of indices into the <see cref="Interpreter.changes">Interpreter.changes</see>
     /// list. <c>first[i]</c> is the index of the first change to the grid
     /// which happened after step <c>i</c> of the program's execution.
     /// </summary>
     public List<int> first;
-    
+
     /// <summary>Counts the number of steps that have been executed by the interpreter.</summary>
     public int counter;
-    
+
     /// <summary>
     /// If true, the interpreter will emit the grid's state at each step of
     /// executing the MarkovJunior program; the resulting images may be made
@@ -63,7 +63,7 @@ class Interpreter
     public bool gif;
 
     Interpreter() { }
-    
+
     /// <summary>
     /// Creates a new Interpreter instance, with the given MarkovJunior program.
     /// </summary>
@@ -78,7 +78,7 @@ class Interpreter
         ip.grid = Grid.Load(xelem, MX, MY, MZ);
         if (ip.grid == null)
         {
-            Console.WriteLine("failed to load grid");
+            //Console.Error.WriteLine("failed to load grid");
             return null;
         }
         ip.startgrid = ip.grid;
@@ -127,7 +127,7 @@ class Interpreter
         {
             if (gif)
             {
-                Console.WriteLine($"[{counter}]");
+                //Console.Error.WriteLine($"[{counter}]");
                 yield return (grid.state, grid.characters, grid.MX, grid.MY, grid.MZ);
             }
 
@@ -140,8 +140,16 @@ class Interpreter
     }
 
     /// <summary>Writes a string to the log, with a newline.</summary>
-    public static void WriteLine(string s) => Console.WriteLine(s);
-    
+    public static void WriteLine(string s)
+    {
+
+        //Console.Error.WriteLine(s);
+
+    }
+
     /// <summary>Writes a string to the log, without a newline.</summary>
-    public static void Write(string s) => Console.Write(s);
+    public static void Write(string s) 
+    {
+        //Console.Error.Write(s);
+    }
 }

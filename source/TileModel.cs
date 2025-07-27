@@ -120,7 +120,7 @@ class TileNode : WFCNode
         }
 
         P = tiledata.Count;
-        Console.WriteLine($"P = {P}");
+        //Console.Error.WriteLine($"P = {P}");
         weights = tempStationary.ToArray();
 
         map = new Dictionary<byte, bool[]>();

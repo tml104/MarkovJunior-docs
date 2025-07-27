@@ -96,7 +96,7 @@ class OverlapNode : WFCNode
             }
 
         P = weights.Count;
-        Console.WriteLine($"number of patterns P = {P}");
+        //Console.Error.WriteLine($"number of patterns P = {P}");
 
         patterns = new byte[P][];
         base.weights = new double[P];
